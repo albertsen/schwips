@@ -1,7 +1,7 @@
 import { error, fail } from '@sveltejs/kit';
 import { and, asc, desc, eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
-import { bottles, grapes, tastingNotes, photos, wineGrapes, wines } from '$lib/server/db/schema';
+import { bottles, grapes, photos, wineGrapes, wines } from '$lib/server/db/schema';
 import { computeSignature } from '$lib/signature';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -68,21 +68,7 @@ function loadWine(id: number) {
 		.orderBy(desc(photos.isPrimary), asc(photos.id))
 		.all();
 
-	const notes = db
-		.select({
-			id: tastingNotes.id,
-			bottleId: tastingNotes.bottleId,
-			tastedOn: tastingNotes.tastedOn,
-			rating: tastingNotes.rating,
-			note: tastingNotes.note
-		})
-		.from(tastingNotes)
-		.innerJoin(bottles, eq(bottles.id, tastingNotes.bottleId))
-		.where(eq(bottles.wineId, id))
-		.orderBy(desc(tastingNotes.tastedOn))
-		.all();
-
-	return { wine, grapes: grapeRows, bottles: bottleRows, photos: photoRows, notes };
+	return { wine, grapes: grapeRows, bottles: bottleRows, photos: photoRows };
 }
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -94,9 +80,28 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const bottleId = Number(form.get('bottle_id'));
 		if (!bottleId) return fail(400, { message: 'bottle_id fehlt' });
+		const consumedDate = String(form.get('consumed_date') || today());
 		db.update(bottles)
-			.set({ status: 'consumed', consumedDate: today(), updatedAt: new Date() })
+			.set({ status: 'consumed', consumedDate, updatedAt: new Date() })
 			.where(and(eq(bottles.id, bottleId), eq(bottles.wineId, Number(params.id))))
+			.run();
+		return { ok: true };
+	},
+
+	editConsumedDate: async ({ request, params }) => {
+		const form = await request.formData();
+		const bottleId = Number(form.get('bottle_id'));
+		const consumedDate = String(form.get('consumed_date') || '').trim();
+		if (!bottleId || !consumedDate) return fail(400, { message: 'Datum erforderlich' });
+		db.update(bottles)
+			.set({ consumedDate, updatedAt: new Date() })
+			.where(
+				and(
+					eq(bottles.id, bottleId),
+					eq(bottles.wineId, Number(params.id)),
+					eq(bottles.status, 'consumed')
+				)
+			)
 			.run();
 		return { ok: true };
 	},
@@ -123,20 +128,15 @@ export const actions: Actions = {
 		return { ok: true };
 	},
 
-	addTastingNote: async ({ request }) => {
+	setRating: async ({ request, params }) => {
+		const id = Number(params.id);
 		const form = await request.formData();
-		const bottleId = Number(form.get('bottle_id'));
-		const note = String(form.get('note') ?? '').trim();
-		const ratingRaw = form.get('rating');
-		if (!bottleId || !note) return fail(400, { message: 'Flasche und Notiz erforderlich' });
-		db.insert(tastingNotes)
-			.values({
-				bottleId,
-				tastedOn: String(form.get('tasted_on') || today()),
-				rating: ratingRaw ? Number(ratingRaw) : null,
-				note
-			})
-			.run();
+		const ratingRaw = String(form.get('rating') ?? '').trim();
+		const rating = ratingRaw === '' ? null : Number(ratingRaw);
+		if (rating != null && (rating < 1 || rating > 5)) {
+			return fail(400, { message: 'Bewertung muss zwischen 1 und 5 liegen' });
+		}
+		db.update(wines).set({ rating, updatedAt: new Date() }).where(eq(wines.id, id)).run();
 		return { ok: true };
 	},
 

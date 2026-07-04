@@ -12,11 +12,20 @@
 	const w = $derived(data.wine);
 
 	const inStock = $derived(data.bottles.filter((b) => b.status === 'in_stock').length);
+	// Same estimated price on every bottle of a wine — show it once.
+	const price = $derived(data.bottles.find((b) => b.currentValue != null)?.currentValue ?? null);
 
 	function grapeLabel(g: { canonical: string; labelName: string | null; percentage: number | null }) {
 		const name = g.labelName ?? g.canonical;
 		return g.percentage != null ? `${name} ${g.percentage}%` : name;
 	}
+
+	function formatPrice(v: number) {
+		return v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+	}
+
+	const stars = [1, 2, 3, 4, 5];
+	const todayIso = new Date().toISOString().slice(0, 10);
 </script>
 
 <p class="back"><a href="/">&larr; {de.inventory}</a></p>
@@ -26,6 +35,24 @@
 	{#if w.name}<span class="cuvee">{w.name}</span>{/if}
 	{#if w.vintage}<span class="vintage">{w.vintage}</span>{/if}
 </h1>
+
+<form method="POST" action="?/setRating" class="rating-form">
+	{#each stars as n (n)}
+		<button
+			type="submit"
+			name="rating"
+			value={n}
+			class="star"
+			class:filled={w.rating != null && n <= w.rating}
+			aria-label="{n} von 5 Sternen"
+		>
+			★
+		</button>
+	{/each}
+	{#if w.rating != null}
+		<button type="submit" name="rating" value="" class="clear-rating">{de.resetRating}</button>
+	{/if}
+</form>
 
 <div class="layout">
 	<section class="facts">
@@ -39,6 +66,7 @@
 			{#if w.region}<dt>{de.region}</dt><dd>{w.region}{#if w.country}, {w.country}{/if}</dd>{/if}
 			{#if w.vineyard}<dt>{de.vineyard}</dt><dd>{w.vineyard}</dd>{/if}
 			{#if w.abv != null}<dt>{de.abv}</dt><dd>{w.abv} %</dd>{/if}
+			{#if price != null}<dt>{de.price}</dt><dd>{formatPrice(price)}</dd>{/if}
 			{#if w.residualSugarGl != null}<dt>{de.residualSugar}</dt><dd>{w.residualSugarGl} g/l</dd>{/if}
 			{#if w.acidityGl != null}<dt>{de.acidity}</dt><dd>{w.acidityGl} g/l</dd>{/if}
 			{#if w.drinkFrom || w.drinkUntil}<dt>{de.drinkingWindow}</dt><dd>{w.drinkFrom ?? '?'}–{w.drinkUntil ?? '?'}</dd>{/if}
@@ -80,11 +108,25 @@
 				<tr>
 					<td>{bottle.bottleSizeMl} ml</td>
 					<td>{bottle.location ?? '—'}</td>
-					<td>{statusLabels[bottle.status]}{#if bottle.consumedDate} ({bottle.consumedDate}){/if}</td>
+					<td>
+						{statusLabels[bottle.status]}
+						{#if bottle.status === 'consumed'}
+							<form method="POST" action="?/editConsumedDate" class="consumed-date-form">
+								<input type="hidden" name="bottle_id" value={bottle.id} />
+								<input
+									type="date"
+									name="consumed_date"
+									value={bottle.consumedDate ?? ''}
+									onchange={(e) => e.currentTarget.form?.requestSubmit()}
+								/>
+							</form>
+						{/if}
+					</td>
 					<td class="row-actions">
 						{#if bottle.status === 'in_stock'}
-							<form method="POST" action="?/markConsumed">
+							<form method="POST" action="?/markConsumed" class="consume-form">
 								<input type="hidden" name="bottle_id" value={bottle.id} />
+								<input type="date" name="consumed_date" value={todayIso} />
 								<button type="submit">{de.markConsumed}</button>
 							</form>
 							<form method="POST" action="?/removeBottle">
@@ -100,33 +142,6 @@
 	<form method="POST" action="?/addBottle">
 		<button type="submit">{de.addBottle}</button>
 	</form>
-</section>
-
-<section>
-	<h2>{de.tastingNotes}</h2>
-	{#if data.notes.length}
-		<ul class="notes">
-			{#each data.notes as note (note.id)}
-				<li>
-					<span class="note-meta">{note.tastedOn}{#if note.rating} · {note.rating}/5{/if}</span>
-					<span>{note.note}</span>
-				</li>
-			{/each}
-		</ul>
-	{/if}
-	{#if inStock > 0 || data.bottles.length > 0}
-		<form method="POST" action="?/addTastingNote" class="note-form">
-			<select name="bottle_id" required>
-				{#each data.bottles as bottle (bottle.id)}
-					<option value={bottle.id}>#{bottle.id} · {statusLabels[bottle.status]}</option>
-				{/each}
-			</select>
-			<input type="date" name="tasted_on" />
-			<input type="number" name="rating" min="1" max="5" placeholder={de.rating} />
-			<input type="text" name="note" placeholder={de.addTastingNote} required />
-			<button type="submit">{de.save}</button>
-		</form>
-	{/if}
 </section>
 
 <style>
@@ -230,38 +245,51 @@
 		border-color: #dc2626;
 		color: #dc2626;
 	}
-	.notes {
-		list-style: none;
-		padding: 0;
-		display: grid;
-		gap: 0.5rem;
-	}
-	.notes li {
-		display: grid;
-		gap: 0.15rem;
-		background: #fff;
-		border: 1px solid #e7e2da;
-		border-radius: 6px;
-		padding: 0.5rem 0.75rem;
-	}
-	.note-meta {
-		font-size: 0.8rem;
-		color: #78716c;
-	}
-	.note-form {
+	.rating-form {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		margin-top: 0.75rem;
+		align-items: center;
+		gap: 0.1rem;
+		margin-top: 0.25rem;
 	}
-	.note-form input[type='text'] {
-		flex: 1;
-		min-width: 200px;
+	.star {
+		background: none;
+		border: none;
+		padding: 0.1rem;
+		font-size: 1.4rem;
+		line-height: 1;
+		color: #d6d3d1;
+		cursor: pointer;
 	}
-	.note-form input,
-	.note-form select {
-		padding: 0.3rem 0.5rem;
+	.star:hover {
+		color: #c9a227;
+	}
+	.star.filled {
+		color: #c9a227;
+	}
+	.clear-rating {
+		margin-left: 0.5rem;
+		border: none;
+		background: none;
+		padding: 0;
+		font-size: 0.75rem;
+		color: #78716c;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	.consumed-date-form {
+		display: inline-block;
+		margin-left: 0.4rem;
+	}
+	.consumed-date-form input,
+	.consume-form input {
+		padding: 0.2rem 0.4rem;
 		border: 1px solid #d6d3d1;
 		border-radius: 6px;
+		font-size: 0.85rem;
+	}
+	.consume-form {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
 	}
 </style>

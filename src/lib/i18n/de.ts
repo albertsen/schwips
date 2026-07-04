@@ -37,6 +37,8 @@ export const de = {
 	organic: 'Bio',
 	vegan: 'Vegan',
 
+	price: 'Preis',
+
 	bottles: 'Flaschen',
 	bottleSize: 'Flaschengröße',
 	location: 'Lagerort',
@@ -47,14 +49,12 @@ export const de = {
 	currentValue: 'Aktueller Wert',
 	inStock: 'vorrätig',
 
-	tastingNotes: 'Verkostungsnotizen',
 	rating: 'Bewertung',
-	tastedOn: 'Verkostet am',
+	resetRating: 'Bewertung entfernen',
 
 	addBottle: 'Flasche hinzufügen',
 	removeBottle: 'Flasche entfernen',
 	markConsumed: 'Als getrunken markieren',
-	addTastingNote: 'Notiz hinzufügen',
 	save: 'Speichern',
 
 	readyNow: 'Trinkreif jetzt',
@@ -64,6 +64,7 @@ export const de = {
 	all: 'Alle',
 	filter: 'Filter',
 	sort: 'Sortierung',
+	resetFilters: 'Filter zurücksetzen',
 	noWines: 'Noch keine Weine im Bestand.'
 } as const;
 

@@ -55,6 +55,7 @@ export const wines = sqliteTable(
 			Record<string, 'label' | 'research' | 'user'>
 		>(),
 		importConfidence: real('import_confidence'), // 0..1
+		rating: integer('rating'), // personal rating, 1..5 stars
 		// Normalized composite identity key, computed by src/lib/signature.ts.
 		wineSignature: text('wine_signature').notNull(),
 		createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(now),
@@ -129,18 +130,6 @@ export const photos = sqliteTable('photos', {
 	createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(now)
 });
 
-/** A tasting note for a specific bottle (so it records the bottle that was drunk). */
-export const tastingNotes = sqliteTable('tasting_notes', {
-	id: integer('id').primaryKey({ autoIncrement: true }),
-	bottleId: integer('bottle_id')
-		.notNull()
-		.references(() => bottles.id),
-	tastedOn: text('tasted_on'), // ISO YYYY-MM-DD
-	rating: integer('rating'), // 1..5
-	note: text('note'),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(now)
-});
-
 export type Wine = typeof wines.$inferSelect;
 export type NewWine = typeof wines.$inferInsert;
 export type Grape = typeof grapes.$inferSelect;
@@ -153,5 +142,3 @@ export type Bottle = typeof bottles.$inferSelect;
 export type NewBottle = typeof bottles.$inferInsert;
 export type Photo = typeof photos.$inferSelect;
 export type NewPhoto = typeof photos.$inferInsert;
-export type TastingNote = typeof tastingNotes.$inferSelect;
-export type NewTastingNote = typeof tastingNotes.$inferInsert;
