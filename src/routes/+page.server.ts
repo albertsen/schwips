@@ -1,7 +1,9 @@
-import { and, asc, eq, inArray, sql } from 'drizzle-orm';
+import { and, asc, eq, inArray, sql, type SQL } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import { bottles, grapes, wineGrapes, wines } from '$lib/server/db/schema';
 import type { PageServerLoad } from './$types';
+
+type OwnColumn = 'producer' | 'wineType' | 'country' | 'region' | 'qualityLevel' | 'color';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const year = new Date().getFullYear();
@@ -19,14 +21,17 @@ export const load: PageServerLoad = async ({ url }) => {
 	const priceRange = priceRangeParam !== null && priceRangeParam !== '' ? Number(priceRangeParam) : null;
 	const trinkreif = q.get('trinkreif') === '1';
 
-	const conditions = [];
-	if (producer) conditions.push(eq(wines.producer, producer));
-	if (wineType) conditions.push(eq(wines.wineType, wineType));
-	if (country) conditions.push(eq(wines.country, country));
-	if (region) conditions.push(eq(wines.region, region));
-	if (qualityLevel) conditions.push(eq(wines.qualityLevel, qualityLevel));
-	if (color) conditions.push(eq(wines.color, color as 'white' | 'red' | 'rose' | 'orange'));
-	if (vintage) conditions.push(eq(wines.vintage, Number(vintage)));
+	// Named (not positional) so each facet's option list can be computed with
+	// every OTHER condition applied — a selection never leaves a sibling
+	// dropdown offering a value that would produce zero results.
+	const condMap: Record<string, SQL> = {};
+	if (producer) condMap.producer = eq(wines.producer, producer);
+	if (wineType) condMap.wineType = eq(wines.wineType, wineType);
+	if (country) condMap.country = eq(wines.country, country);
+	if (region) condMap.region = eq(wines.region, region);
+	if (qualityLevel) condMap.qualityLevel = eq(wines.qualityLevel, qualityLevel);
+	if (color) condMap.color = eq(wines.color, color as 'white' | 'red' | 'rose' | 'orange');
+	if (vintage) condMap.vintage = eq(wines.vintage, Number(vintage));
 	if (grape) {
 		// Grapes live on the many-to-many wine_grapes table, not a wines column —
 		// resolve matching wine ids first, then filter wines by inArray.
@@ -37,31 +42,79 @@ export const load: PageServerLoad = async ({ url }) => {
 			.where(eq(grapes.name, grape))
 			.all()
 			.map((r) => r.wineId);
-		conditions.push(inArray(wines.id, wineIdsForGrape));
+		condMap.grape = inArray(wines.id, wineIdsForGrape);
 	}
 	if (trinkreif) {
-		conditions.push(sql`${wines.drinkFrom} <= ${year} and ${wines.drinkUntil} >= ${year}`);
+		condMap.trinkreif = sql`${wines.drinkFrom} <= ${year} and ${wines.drinkUntil} >= ${year}`;
 	}
 
-	const rows = db
-		.select({
-			id: wines.id,
-			producer: wines.producer,
-			name: wines.name,
-			vintage: wines.vintage,
-			wineType: wines.wineType,
-			color: wines.color,
-			country: wines.country,
-			region: wines.region,
-			appellation: wines.appellation,
-			qualityLevel: wines.qualityLevel,
-			drinkFrom: wines.drinkFrom,
-			drinkUntil: wines.drinkUntil
-		})
-		.from(wines)
-		.where(conditions.length ? and(...conditions) : undefined)
-		.orderBy(asc(wines.producer), asc(wines.name))
+	// Estimated price per wine (same value on every bottle of that wine — see
+	// `min` rather than `avg` to sidestep float rounding). Computed across ALL
+	// bottles up front since faceting needs it before the final wine set exists.
+	const priceRows = db
+		.select({ wineId: bottles.wineId, price: sql<number | null>`min(${bottles.currentValue})` })
+		.from(bottles)
+		.groupBy(bottles.wineId)
 		.all();
+	const priceByWine = new Map(priceRows.map((p) => [p.wineId, p.price]));
+
+	// Ids of wines matching every active filter except those in `excludeKeys`.
+	// Price lives on `bottles`, not `wines`, so it's applied here in JS rather
+	// than through condMap.
+	function facetIds(excludeKeys: string[] = []): number[] {
+		const conds = Object.entries(condMap)
+			.filter(([k]) => !excludeKeys.includes(k))
+			.map(([, c]) => c);
+		let ids = db
+			.select({ id: wines.id })
+			.from(wines)
+			.where(conds.length ? and(...conds) : undefined)
+			.all()
+			.map((r) => r.id);
+		if (priceRange != null && !excludeKeys.includes('price')) {
+			ids = ids.filter((id) => {
+				const p = priceByWine.get(id);
+				return p != null && Math.floor(p / 10) * 10 === priceRange;
+			});
+		}
+		return ids;
+	}
+
+	function distinctForOwnColumn(excludeKey: string, column: OwnColumn): string[] {
+		const ids = facetIds([excludeKey]);
+		if (!ids.length) return [];
+		return db
+			.selectDistinct({ v: wines[column] })
+			.from(wines)
+			.where(inArray(wines.id, ids))
+			.all()
+			.map((r) => r.v)
+			.filter((v): v is string => !!v)
+			.sort();
+	}
+
+	const matchingIds = facetIds();
+	const rows = matchingIds.length
+		? db
+				.select({
+					id: wines.id,
+					producer: wines.producer,
+					name: wines.name,
+					vintage: wines.vintage,
+					wineType: wines.wineType,
+					color: wines.color,
+					country: wines.country,
+					region: wines.region,
+					appellation: wines.appellation,
+					qualityLevel: wines.qualityLevel,
+					drinkFrom: wines.drinkFrom,
+					drinkUntil: wines.drinkUntil
+				})
+				.from(wines)
+				.where(inArray(wines.id, matchingIds))
+				.orderBy(asc(wines.producer), asc(wines.name))
+				.all()
+		: [];
 
 	// In-stock bottle count per wine (grouped, merged in JS — a correlated
 	// subquery in a sql template renders unqualified columns and mis-binds).
@@ -74,37 +127,20 @@ export const load: PageServerLoad = async ({ url }) => {
 	const countByWine = new Map(countRows.map((c) => [c.wineId, c.n]));
 	const totalWines = db.select({ id: wines.id }).from(wines).all().length;
 
-	// Estimated price per wine (same value on every bottle of that wine — see
-	// `min` rather than `avg` to sidestep float rounding). Computed across ALL
-	// bottles (not the filtered set) so the €10-step filter options stay
-	// stable regardless of the current filter.
-	const priceRows = db
-		.select({ wineId: bottles.wineId, price: sql<number | null>`min(${bottles.currentValue})` })
-		.from(bottles)
-		.groupBy(bottles.wineId)
-		.all();
-	const priceByWine = new Map(priceRows.map((p) => [p.wineId, p.price]));
-	const priceBuckets = [
-		...new Set(
-			priceRows
-				.map((p) => p.price)
-				.filter((p): p is number => p != null)
-				.map((p) => Math.floor(p / 10) * 10)
-		)
-	].sort((a, b) => a - b);
-
-	// Price filter is applied in JS (the value lives on `bottles`, not `wines`,
-	// and doesn't fit the SQL `conditions` array above).
-	const priceFilteredRows =
-		priceRange != null
-			? rows.filter((r) => {
-					const p = priceByWine.get(r.id);
-					return p != null && Math.floor(p / 10) * 10 === priceRange;
-				})
-			: rows;
+	const priceBuckets = (() => {
+		const ids = facetIds(['price']);
+		return [
+			...new Set(
+				ids
+					.map((id) => priceByWine.get(id))
+					.filter((p): p is number => p != null)
+					.map((p) => Math.floor(p / 10) * 10)
+			)
+		].sort((a, b) => a - b);
+	})();
 
 	// Grape display names per wine (label_name ?? canonical), grouped in JS.
-	const wineIds = priceFilteredRows.map((r) => r.id);
+	const wineIds = rows.map((r) => r.id);
 	const grapeRows = wineIds.length
 		? db
 				.select({
@@ -125,52 +161,28 @@ export const load: PageServerLoad = async ({ url }) => {
 		grapesByWine.set(g.wineId, list);
 	}
 
-	// Distinct filter option values.
-	const producers = db
-		.selectDistinct({ v: wines.producer })
-		.from(wines)
-		.all()
-		.map((r) => r.v)
-		.filter((v): v is string => !!v)
-		.sort();
-	const types = db
-		.selectDistinct({ v: wines.wineType })
-		.from(wines)
-		.all()
-		.map((r) => r.v)
-		.filter((v): v is string => !!v)
-		.sort();
-	const countries = db
-		.selectDistinct({ v: wines.country })
-		.from(wines)
-		.all()
-		.map((r) => r.v)
-		.filter((v): v is string => !!v)
-		.sort();
-	const regions = db
-		.selectDistinct({ v: wines.region })
-		.from(wines)
-		.all()
-		.map((r) => r.v)
-		.filter((v): v is string => !!v)
-		.sort();
-	const qualityLevels = db
-		.selectDistinct({ v: wines.qualityLevel })
-		.from(wines)
-		.all()
-		.map((r) => r.v)
-		.filter((v): v is string => !!v)
-		.sort();
-	const grapeOptions = db
-		.selectDistinct({ v: grapes.name })
-		.from(grapes)
-		.innerJoin(wineGrapes, eq(wineGrapes.grapeId, grapes.id))
-		.all()
-		.map((r) => r.v)
-		.filter((v): v is string => !!v)
-		.sort();
+	// Distinct filter option values, each faceted against every OTHER active filter.
+	const producers = distinctForOwnColumn('producer', 'producer');
+	const types = distinctForOwnColumn('wineType', 'wineType');
+	const countries = distinctForOwnColumn('country', 'country');
+	const regions = distinctForOwnColumn('region', 'region');
+	const qualityLevels = distinctForOwnColumn('qualityLevel', 'qualityLevel');
+	const colors = distinctForOwnColumn('color', 'color');
+	const grapeOptions = (() => {
+		const ids = facetIds(['grape']);
+		if (!ids.length) return [];
+		return db
+			.selectDistinct({ v: grapes.name })
+			.from(grapes)
+			.innerJoin(wineGrapes, eq(wineGrapes.grapeId, grapes.id))
+			.where(inArray(wineGrapes.wineId, ids))
+			.all()
+			.map((r) => r.v)
+			.filter((v): v is string => !!v)
+			.sort();
+	})();
 
-	const winesWithStock = priceFilteredRows.map((r) => ({
+	const winesWithStock = rows.map((r) => ({
 		...r,
 		grapes: grapesByWine.get(r.id) ?? [],
 		inStock: countByWine.get(r.id) ?? 0,
@@ -180,7 +192,7 @@ export const load: PageServerLoad = async ({ url }) => {
 	const totalBottles = countRows.reduce((sum, c) => sum + c.n, 0);
 	return {
 		wines: winesWithStock,
-		filters: { producers, types, countries, regions, qualityLevels, priceBuckets, grapeOptions },
+		filters: { producers, types, countries, regions, qualityLevels, colors, priceBuckets, grapeOptions },
 		active: {
 			producer,
 			wineType,

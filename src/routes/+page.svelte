@@ -56,8 +56,8 @@
 				{de.color}
 				<select name="color" onchange={(e) => e.currentTarget.form?.requestSubmit()}>
 					<option value="">{de.all}</option>
-					{#each Object.entries(colorLabels) as [value, label] (value)}
-						<option {value} selected={data.active.color === value}>{label}</option>
+					{#each data.filters.colors as c (c)}
+						<option value={c} selected={data.active.color === c}>{colorLabels[c]}</option>
 					{/each}
 				</select>
 			</label>
