@@ -24,6 +24,10 @@ The whole loop is three steps:
 
 Each detail on a wine remembers whether it came straight off the label or was researched, so you always know what's a printed fact versus Claude's best-informed guess.
 
+## 🍽️ What goes with what
+
+Not sure which bottle to open? **Run `/recommend` in Claude Code** and describe the dish or occasion — "Lachsquiche", "pasta amatriciana", "Grillabend mit Freunden". Claude reads your actual in-stock bottles from the database, reasons about the pairing (acidity, tannin, sweetness, body — not just a keyword match on a pairing field), and recommends one to three wines with a short rationale, bottle counts, and a direct link to each wine's page in the running app. It only ever suggests wines you actually own.
+
 ## 🍇 What it tracks for you
 
 - **Bottle-level inventory** — how many of each wine you currently have in stock, always up to date as you add and consume.
@@ -32,6 +36,7 @@ Each detail on a wine remembers whether it came straight off the label or was re
 - **Drinking windows** — each wine gets an estimated window based on its quality tier. A simple Gutswein is ready to enjoy soon after release, while a Großes Gewächs or grand-cru-style wine wants years to come into its own. The Bestand flags each wine as **"Trinkreif jetzt"** (ready now) or **"Noch nicht trinkreif"** (not yet).
 - **Filterable inventory** — narrow your Bestand by wine type, country, region, color, producer, or quality level, with live counts of how many wines and bottles match.
 - **Tasting notes** — log a note and a rating against a specific bottle, for example the evening you open and drink it.
+- **Pairing recommendations** — the `/recommend` workflow above suggests wines from your own stock for a given dish or occasion, with reasoning and links.
 
 ## 🛠️ Tech stack
 

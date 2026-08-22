@@ -30,6 +30,10 @@ The `/import-wines` Claude Code command (`.claude/commands/import-wines.md`) rea
 - Grape varieties: `grapes` (canonical, German-preferred name) + `grape_aliases` (synonyms, e.g. Pinot Grigio → Grauburgunder) + `wine_grapes.label_name` (as printed on the label) + `wine_grapes.percentage`. New varieties are created on the fly by the import CLI if not already present.
 - `wines.data_sources` is a JSON map of field name → `'label' | 'research' | 'user'`, plus `wines.import_confidence` (0..1). Preserve this provenance tracking on any new field you add to the wine model.
 
+## The recommend skill
+
+`.claude/commands/recommend.md` (`/recommend`) suggests wines from the current stock for a dish or occasion the user names. It is **read-only**: it queries `runtime/data/schwips.db` directly (e.g. via `sqlite3`) for `in_stock` bottles and never writes to the DB — there's no CLI counterpart like the import pipeline's. It always answers in German and links each recommended wine to `http://localhost:<port>/wine/<id>`, detecting the actual dev-server port at run time (e.g. via `lsof`) rather than assuming the SvelteKit/Vite default of `5173`.
+
 ## Known intentional Drizzle workaround
 
 A raw `sql` template used as a correlated subquery renders unqualified column names and mis-binds to the wrong table (verified bug, not a hypothesis). Where you need an aggregate per row (e.g. bottle count per wine), use a grouped `SELECT ... GROUP BY` query plus a JS `Map` for the join instead of a correlated subquery — see `src/routes/+page.server.ts` and `src/routes/trinkfenster/+page.server.ts` for the pattern.
