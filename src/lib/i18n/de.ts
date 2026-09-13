@@ -7,7 +7,6 @@ export const de = {
 	appName: 'Schwips',
 	inventory: 'Bestand',
 	wines: 'Weine',
-	trinkfenster: 'Trinkfenster',
 	wineDetail: 'Weindetails',
 
 	producer: 'Erzeuger',
@@ -48,6 +47,9 @@ export const de = {
 	purchaseVendor: 'Händler',
 	currentValue: 'Aktueller Wert',
 	inStock: 'vorrätig',
+	consumedOn: 'Getrunken am',
+	consumedFilter: 'Getrunken',
+	history: 'Historie',
 
 	rating: 'Bewertung',
 	resetRating: 'Bewertung entfernen',
@@ -59,7 +61,6 @@ export const de = {
 
 	readyNow: 'Trinkreif jetzt',
 	notYetReady: 'Noch nicht trinkreif',
-	pastWindow: 'Trinkfenster überschritten',
 
 	all: 'Alle',
 	filter: 'Filter',
@@ -94,6 +95,13 @@ export const closureLabels: Record<string, string> = {
 	screwcap: 'Schraubverschluss',
 	glass: 'Glasstopfen',
 	crown: 'Kronkorken'
+};
+
+export const wineTypeLabels: Record<string, string> = {
+	wine: 'Wein',
+	sparkling: 'Sekt',
+	champagne: 'Champagner',
+	kabinett: 'Kabinett'
 };
 
 export const statusLabels: Record<string, string> = {

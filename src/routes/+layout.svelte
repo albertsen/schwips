@@ -1,8 +1,15 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import favicon from '$lib/assets/favicon.svg';
 	import { de } from '$lib/i18n/de';
 
 	let { children } = $props();
+
+	// Filters set on the inventory list are carried in the URL's query string.
+	// When navigating to a wine and back, that string rides along (see the
+	// wine-card link in +page.svelte), so re-deriving the "Bestand" link from
+	// it here restores the same filters instead of resetting to "/".
+	const inventoryHref = $derived('/' + page.url.search);
 </script>
 
 <svelte:head>
@@ -13,8 +20,7 @@
 <header>
 	<nav>
 		<a href="/" class="brand">{de.appName}</a>
-		<a href="/">{de.inventory}</a>
-		<a href="/trinkfenster">{de.trinkfenster}</a>
+		<a href={inventoryHref}>{de.inventory}</a>
 	</nav>
 </header>
 

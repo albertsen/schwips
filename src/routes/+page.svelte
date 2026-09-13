@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { de, colorLabels } from '$lib/i18n/de';
+	import { page } from '$app/state';
+	import { de, colorLabels, wineTypeLabels } from '$lib/i18n/de';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -18,6 +19,10 @@
 
 	function formatPrice(v: number) {
 		return v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+	}
+
+	function formatDate(iso: string) {
+		return new Date(iso).toLocaleDateString('de-DE');
 	}
 
 	// Third row: Name · Region/Lage · Qualitätseinstufung (Typ · Rebsorte · Jahrgang share the row above,
@@ -66,7 +71,7 @@
 				<select name="wine_type" onchange={(e) => e.currentTarget.form?.requestSubmit()}>
 					<option value="">{de.all}</option>
 					{#each data.filters.types as type (type)}
-						<option value={type} selected={data.active.wineType === type}>{type}</option>
+						<option value={type} selected={data.active.wineType === type}>{wineTypeLabels[type]}</option>
 					{/each}
 				</select>
 			</label>
@@ -109,15 +114,6 @@
 				</select>
 			</label>
 			<label>
-				{de.qualityLevel}
-				<select name="quality_level" onchange={(e) => e.currentTarget.form?.requestSubmit()}>
-					<option value="">{de.all}</option>
-					{#each data.filters.qualityLevels as ql (ql)}
-						<option value={ql} selected={data.active.qualityLevel === ql}>{ql}</option>
-					{/each}
-				</select>
-			</label>
-			<label>
 				{de.price}
 				<select name="price_range" onchange={(e) => e.currentTarget.form?.requestSubmit()}>
 					<option value="">{de.all}</option>
@@ -128,15 +124,26 @@
 					{/each}
 				</select>
 			</label>
+			<label>
+				{de.rating}
+				<select name="rating" onchange={(e) => e.currentTarget.form?.requestSubmit()}>
+					<option value="">{de.all}</option>
+					{#each data.filters.ratings as r (r)}
+						<option value={r} selected={data.active.rating === r}
+							>{'★'.repeat(r)}{'☆'.repeat(5 - r)}</option
+						>
+					{/each}
+				</select>
+			</label>
 			<label class="check">
 				<input
 					type="checkbox"
-					name="trinkreif"
+					name="getrunken"
 					value="1"
-					checked={data.active.trinkreif}
+					checked={data.active.getrunken}
 					onchange={(e) => e.currentTarget.form?.requestSubmit()}
 				/>
-				{de.readyNow}
+				{de.consumedFilter}
 			</label>
 		</form>
 		{#if hasActiveFilters}
@@ -151,13 +158,13 @@
 			<ul class="wine-list">
 				{#each data.wines as wine (wine.id)}
 					<li>
-						<a href="/wine/{wine.id}">
+						<a href="/wine/{wine.id}{page.url.search}">
 							<span class="head">
 								<span class="producer">{wine.producer}</span>
 								{#if wine.price != null}<span class="price">{formatPrice(wine.price)}</span>{/if}
 							</span>
 							<span class="type-row">
-								{#if wine.wineType}<span class="type">{wine.wineType}</span>{/if}
+								{#if wine.wineType}<span class="type">{wineTypeLabels[wine.wineType]}</span>{/if}
 								{#if wine.grapes.length}<span class="grape">{wine.grapes.join(', ')}</span>{/if}
 								{#if wine.vintage}<span class="vintage">{wine.vintage}</span>{/if}
 							</span>
@@ -171,8 +178,16 @@
 									>{:else if isNotYetReady(wine.drinkFrom)}<span class="tag not-ready"
 										>{de.notYetReady}</span
 									>{/if}
+								{#if wine.rating}<span class="rating">{'★'.repeat(wine.rating)}</span>{/if}
 								<span class="count">{wine.inStock} {de.bottles}</span>
 							</span>
+							{#if wine.consumedDates.length}
+								<div class="consumed-list">
+									{#each wine.consumedDates as d, i (i)}
+										<span class="consumed">{de.consumedOn} {formatDate(d)}</span>
+									{/each}
+								</div>
+							{/if}
 						</a>
 					</li>
 				{/each}
@@ -408,6 +423,22 @@
 	.tag.color-orange {
 		background: #ffedd5;
 		color: #c2410c;
+	}
+	.rating {
+		color: #c9a227;
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+	}
+	.consumed-list {
+		display: grid;
+		gap: 0.2rem;
+		margin-top: 0.4rem;
+		padding-top: 0.4rem;
+		border-top: 1px solid #f0ede8;
+	}
+	.consumed {
+		font-size: 0.75rem;
+		color: #78716c;
 	}
 	.count {
 		margin-left: auto;

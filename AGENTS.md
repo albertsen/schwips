@@ -36,7 +36,7 @@ The `/import-wines` Claude Code command (`.claude/commands/import-wines.md`) rea
 
 ## Known intentional Drizzle workaround
 
-A raw `sql` template used as a correlated subquery renders unqualified column names and mis-binds to the wrong table (verified bug, not a hypothesis). Where you need an aggregate per row (e.g. bottle count per wine), use a grouped `SELECT ... GROUP BY` query plus a JS `Map` for the join instead of a correlated subquery — see `src/routes/+page.server.ts` and `src/routes/trinkfenster/+page.server.ts` for the pattern.
+A raw `sql` template used as a correlated subquery renders unqualified column names and mis-binds to the wrong table (verified bug, not a hypothesis). Where you need an aggregate per row (e.g. bottle count per wine), use a grouped `SELECT ... GROUP BY` query plus a JS `Map` for the join instead of a correlated subquery — see `src/routes/+page.server.ts` for the pattern.
 
 ## Before you're done
 

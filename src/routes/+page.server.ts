@@ -3,10 +3,9 @@ import { db } from '$lib/server/db';
 import { bottles, grapes, wineGrapes, wines } from '$lib/server/db/schema';
 import type { PageServerLoad } from './$types';
 
-type OwnColumn = 'producer' | 'wineType' | 'country' | 'region' | 'qualityLevel' | 'color';
+type OwnColumn = 'producer' | 'wineType' | 'country' | 'region' | 'color';
 
 export const load: PageServerLoad = async ({ url }) => {
-	const year = new Date().getFullYear();
 	const q = url.searchParams;
 
 	const producer = q.get('producer');
@@ -15,23 +14,24 @@ export const load: PageServerLoad = async ({ url }) => {
 	const region = q.get('region');
 	const color = q.get('color');
 	const vintage = q.get('vintage');
-	const qualityLevel = q.get('quality_level');
 	const grape = q.get('grape');
 	const priceRangeParam = q.get('price_range');
 	const priceRange = priceRangeParam !== null && priceRangeParam !== '' ? Number(priceRangeParam) : null;
-	const trinkreif = q.get('trinkreif') === '1';
+	const ratingParam = q.get('rating');
+	const rating = ratingParam !== null && ratingParam !== '' ? Number(ratingParam) : null;
+	const getrunken = q.get('getrunken') === '1';
 
 	// Named (not positional) so each facet's option list can be computed with
 	// every OTHER condition applied — a selection never leaves a sibling
 	// dropdown offering a value that would produce zero results.
 	const condMap: Record<string, SQL> = {};
 	if (producer) condMap.producer = eq(wines.producer, producer);
-	if (wineType) condMap.wineType = eq(wines.wineType, wineType);
+	if (wineType) condMap.wineType = eq(wines.wineType, wineType as 'wine' | 'sparkling' | 'champagne' | 'kabinett');
 	if (country) condMap.country = eq(wines.country, country);
 	if (region) condMap.region = eq(wines.region, region);
-	if (qualityLevel) condMap.qualityLevel = eq(wines.qualityLevel, qualityLevel);
 	if (color) condMap.color = eq(wines.color, color as 'white' | 'red' | 'rose' | 'orange');
 	if (vintage) condMap.vintage = eq(wines.vintage, Number(vintage));
+	if (rating != null) condMap.rating = eq(wines.rating, rating);
 	if (grape) {
 		// Grapes live on the many-to-many wine_grapes table, not a wines column —
 		// resolve matching wine ids first, then filter wines by inArray.
@@ -44,9 +44,6 @@ export const load: PageServerLoad = async ({ url }) => {
 			.map((r) => r.wineId);
 		condMap.grape = inArray(wines.id, wineIdsForGrape);
 	}
-	if (trinkreif) {
-		condMap.trinkreif = sql`${wines.drinkFrom} <= ${year} and ${wines.drinkUntil} >= ${year}`;
-	}
 
 	// Estimated price per wine (same value on every bottle of that wine — see
 	// `min` rather than `avg` to sidestep float rounding). Computed across ALL
@@ -58,9 +55,25 @@ export const load: PageServerLoad = async ({ url }) => {
 		.all();
 	const priceByWine = new Map(priceRows.map((p) => [p.wineId, p.price]));
 
+	// Every consumption date per wine, one line per bottle on the card —
+	// oldest first. Also doubles as the "getrunken" filter's wine-id set.
+	const consumedRows = db
+		.select({ wineId: bottles.wineId, consumedDate: bottles.consumedDate })
+		.from(bottles)
+		.where(eq(bottles.status, 'consumed'))
+		.all();
+	const consumedDatesByWine = new Map<number, string[]>();
+	for (const r of consumedRows) {
+		if (!r.consumedDate) continue;
+		const list = consumedDatesByWine.get(r.wineId) ?? [];
+		list.push(r.consumedDate);
+		consumedDatesByWine.set(r.wineId, list);
+	}
+	for (const list of consumedDatesByWine.values()) list.sort((a, b) => (a < b ? -1 : 1));
+
 	// Ids of wines matching every active filter except those in `excludeKeys`.
-	// Price lives on `bottles`, not `wines`, so it's applied here in JS rather
-	// than through condMap.
+	// Price and "getrunken" live on `bottles`, not `wines`, so they're applied
+	// here in JS rather than through condMap.
 	function facetIds(excludeKeys: string[] = []): number[] {
 		const conds = Object.entries(condMap)
 			.filter(([k]) => !excludeKeys.includes(k))
@@ -76,6 +89,9 @@ export const load: PageServerLoad = async ({ url }) => {
 				const p = priceByWine.get(id);
 				return p != null && Math.floor(p / 10) * 10 === priceRange;
 			});
+		}
+		if (getrunken && !excludeKeys.includes('getrunken')) {
+			ids = ids.filter((id) => consumedDatesByWine.has(id));
 		}
 		return ids;
 	}
@@ -108,7 +124,8 @@ export const load: PageServerLoad = async ({ url }) => {
 					appellation: wines.appellation,
 					qualityLevel: wines.qualityLevel,
 					drinkFrom: wines.drinkFrom,
-					drinkUntil: wines.drinkUntil
+					drinkUntil: wines.drinkUntil,
+					rating: wines.rating
 				})
 				.from(wines)
 				.where(inArray(wines.id, matchingIds))
@@ -139,6 +156,22 @@ export const load: PageServerLoad = async ({ url }) => {
 		].sort((a, b) => a - b);
 	})();
 
+	const ratings = (() => {
+		const ids = facetIds(['rating']);
+		if (!ids.length) return [];
+		return [
+			...new Set(
+				db
+					.select({ v: wines.rating })
+					.from(wines)
+					.where(inArray(wines.id, ids))
+					.all()
+					.map((r) => r.v)
+					.filter((v): v is number => v != null)
+			)
+		].sort((a, b) => b - a);
+	})();
+
 	// Grape display names per wine (label_name ?? canonical), grouped in JS.
 	const wineIds = rows.map((r) => r.id);
 	const grapeRows = wineIds.length
@@ -166,7 +199,6 @@ export const load: PageServerLoad = async ({ url }) => {
 	const types = distinctForOwnColumn('wineType', 'wineType');
 	const countries = distinctForOwnColumn('country', 'country');
 	const regions = distinctForOwnColumn('region', 'region');
-	const qualityLevels = distinctForOwnColumn('qualityLevel', 'qualityLevel');
 	const colors = distinctForOwnColumn('color', 'color');
 	const grapeOptions = (() => {
 		const ids = facetIds(['grape']);
@@ -186,13 +218,14 @@ export const load: PageServerLoad = async ({ url }) => {
 		...r,
 		grapes: grapesByWine.get(r.id) ?? [],
 		inStock: countByWine.get(r.id) ?? 0,
-		price: priceByWine.get(r.id) ?? null
+		price: priceByWine.get(r.id) ?? null,
+		consumedDates: consumedDatesByWine.get(r.id) ?? []
 	}));
 	const filteredBottles = winesWithStock.reduce((sum, w) => sum + w.inStock, 0);
 	const totalBottles = countRows.reduce((sum, c) => sum + c.n, 0);
 	return {
 		wines: winesWithStock,
-		filters: { producers, types, countries, regions, qualityLevels, colors, priceBuckets, grapeOptions },
+		filters: { producers, types, countries, regions, colors, priceBuckets, grapeOptions, ratings },
 		active: {
 			producer,
 			wineType,
@@ -200,10 +233,10 @@ export const load: PageServerLoad = async ({ url }) => {
 			region,
 			color,
 			vintage,
-			qualityLevel,
 			grape,
 			priceRange,
-			trinkreif
+			rating,
+			getrunken
 		},
 		// Count of distinct wines (Bestand cards) matching the filter, out of
 		// all distinct wines — each card is "ein Wein", bottle count lives on

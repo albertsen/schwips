@@ -17,7 +17,7 @@ export const wineFieldsSchema = z.object({
 	producer: z.string(),
 	name: z.string().nullable(),
 	vintage: z.number().int().nullable(),
-	wine_type: z.string().nullable(),
+	wine_type: z.enum(['wine', 'sparkling', 'champagne', 'kabinett']).nullable(),
 	color: z.enum(['white', 'red', 'rose', 'orange']).nullable(),
 	sweetness: z.enum(['dry', 'off-dry', 'medium', 'sweet', 'noble-sweet']).nullable(),
 	quality_level: z.string().nullable(),

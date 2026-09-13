@@ -23,7 +23,7 @@ export const wines = sqliteTable(
 		// be null; it is NOT the wine's identity on its own.
 		name: text('name'),
 		vintage: integer('vintage'), // null for NV sparkling
-		wineType: text('wine_type'), // Art (Sekt, Kabinett, GG, …), free-ish
+		wineType: text('wine_type', { enum: ['wine', 'sparkling', 'champagne', 'kabinett'] }),
 		color: text('color', { enum: ['white', 'red', 'rose', 'orange'] }),
 		sweetness: text('sweetness', {
 			enum: ['dry', 'off-dry', 'medium', 'sweet', 'noble-sweet']

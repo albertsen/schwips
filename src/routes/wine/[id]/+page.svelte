@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import {
 		de,
 		colorLabels,
 		sweetnessLabels,
 		closureLabels,
-		statusLabels
+		statusLabels,
+		wineTypeLabels
 	} from '$lib/i18n/de';
 	import type { PageData } from './$types';
 
@@ -24,11 +26,22 @@
 		return v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 	}
 
+	function formatDate(iso: string) {
+		return new Date(iso).toLocaleDateString('de-DE');
+	}
+
+	// Oldest first, one line per consumed bottle.
+	const consumedHistory = $derived(
+		data.bottles
+			.filter((b) => b.status === 'consumed' && b.consumedDate)
+			.sort((a, b) => (a.consumedDate! < b.consumedDate! ? -1 : 1))
+	);
+
 	const stars = [1, 2, 3, 4, 5];
 	const todayIso = new Date().toISOString().slice(0, 10);
 </script>
 
-<p class="back"><a href="/">&larr; {de.inventory}</a></p>
+<p class="back"><a href="/{page.url.search}">&larr; {de.inventory}</a></p>
 
 <h1>
 	{w.producer}
@@ -57,7 +70,7 @@
 <div class="layout">
 	<section class="facts">
 		<dl>
-			{#if w.wineType}<dt>{de.wineType}</dt><dd>{w.wineType}</dd>{/if}
+			{#if w.wineType}<dt>{de.wineType}</dt><dd>{wineTypeLabels[w.wineType]}</dd>{/if}
 			{#if w.color}<dt>{de.color}</dt><dd>{colorLabels[w.color]}</dd>{/if}
 			{#if w.sweetness}<dt>{de.sweetness}</dt><dd>{sweetnessLabels[w.sweetness]}</dd>{/if}
 			{#if w.qualityLevel}<dt>{de.qualityLevel}</dt><dd>{w.qualityLevel}</dd>{/if}
@@ -143,6 +156,19 @@
 		<button type="submit">{de.addBottle}</button>
 	</form>
 </section>
+
+{#if consumedHistory.length}
+	<section>
+		<h2>{de.history}</h2>
+		<ul class="history">
+			{#each consumedHistory as bottle (bottle.id)}
+				<li>
+					{de.consumedOn} {formatDate(bottle.consumedDate ?? '')}{#if bottle.location} · {bottle.location}{/if}
+				</li>
+			{/each}
+		</ul>
+	</section>
+{/if}
 
 <style>
 	.back a {
@@ -291,5 +317,18 @@
 		display: flex;
 		align-items: center;
 		gap: 0.4rem;
+	}
+	.history {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-size: 0.9rem;
+		display: grid;
+		gap: 0.35rem;
+	}
+	.history li {
+		padding: 0.35rem 0.5rem;
+		border-top: 1px solid #f0ede8;
+		color: #57534e;
 	}
 </style>

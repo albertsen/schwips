@@ -16,10 +16,12 @@ Du bist der Wein-Importeur für **Schwips**. Deine Aufgabe: die Fotos in `runtim
 
 3. **Extrahieren + recherchieren (pro Gruppe).**
    - Etiketten können in **beliebiger Sprache** sein (Deutsch, Italienisch, Französisch, Englisch, Spanisch …) — extrahiere unabhängig davon.
-   - Freitextfelder (`producer`, `region`, `vineyard`, `name`, `description`) **wie gedruckt** speichern; kontrollierte Felder (`color`, `sweetness`, `closure`, `wine_type` soweit zuordenbar) auf die **englischen Enum-Werte** normalisieren.
+   - Freitextfelder (`producer`, `region`, `vineyard`, `name`, `description`) **wie gedruckt** speichern; kontrollierte Felder (`color`, `sweetness`, `closure`, `wine_type`) auf die **englischen Enum-Werte** normalisieren.
+   - **`wine_type`** ist eine grobe Kategorie mit genau vier Werten: `"kabinett"` (deutsches Prädikat „Kabinett" auf dem Etikett) > `"champagne"` (Appellation Champagne) > `"sparkling"` (jeder andere Sekt/Crémant/Spumante/Cava …) > `"wine"` (alles andere, still). Prüfe in dieser Reihenfolge. Feinere Angaben (GG, Lagenwein, „Rotwein trocken" …) gehören nicht hierhin, sondern in `quality_level`/`description`/`extra_data`.
    - **Rebsorten:** jeden gedruckten Namen auf die **kanonische Sorte** (deutsch bevorzugt) auflösen, z. B. gedruckt „Pinot Grigio" → `canonical: "Grauburgunder"`; gedruckte Schreibweise in `label_name`; `color` setzen. Nutze bekannte Aliase aus der Tabelle `grape_aliases` (per `sqlite3 runtime/data/schwips.db` abfragbar) und dein Wissen. Unbekannte Sorte → als neue kanonische Sorte vorschlagen **oder** deutsche `open_question` — nie eine Dublette erfinden.
    - **Appellations-Weine:** Steht statt Rebsorten eine Herkunftsbezeichnung auf dem Etikett (Chianti, Bordeaux, Rioja, Châteauneuf-du-Pape …), setze `appellation` (Provenienz `label`) und **recherchiere** die typische/rechtliche Zusammensetzung (Chianti → Sangiovese-dominiert). Trage diese Sorten mit Provenienz `research`, `label_name: null` und typischen Prozenten ein und ergänze eine deutsche `open_question` („Rebsorten aus Appellation … abgeleitet, nicht vom Etikett").
    - Fehlende/ergänzende Daten (Trinkreife, Rebsortenanteile, Bewertungen, Regionsfakten) per **WebSearch** recherchieren.
+   - **Preis recherchieren.** Suche per WebSearch nach dem aktuellen Verkaufspreis (Erzeuger-Shop, Fachhändler) für genau diesen Wein/Jahrgang und trage ihn als `bottle.current_value` ein (nicht `purchase_price` — der bleibt `null`, sofern der Nutzer nicht explizit sagt, was er bezahlt hat). Findest du keinen belastbaren Preis, lass `current_value` `null` und ergänze eine `open_question`.
    - Alles Gedruckte ohne eigene Spalte in `extra_data` ablegen (Fassausbau, Handlese, Abfüllnummer, Prämierungen …).
    - Pro Feld die Herkunft in `data_sources` festhalten (`"label"` | `"research"`), plus eine Gesamt-`import_confidence` in `[0,1]`.
 
@@ -50,7 +52,7 @@ Du bist der Wein-Importeur für **Schwips**. Deine Aufgabe: die Fotos in `runtim
       "open_questions": ["deutsche Notiz …"],          // optional
       "wine": {
         "producer": "…", "name": null, "vintage": 2021,
-        "wine_type": "…", "color": "white|red|rose|orange",
+        "wine_type": "wine|sparkling|champagne|kabinett", "color": "white|red|rose|orange",
         "sweetness": "dry|off-dry|medium|sweet|noble-sweet",
         "quality_level": "…", "region": "…", "country": "…",
         "appellation": null, "vineyard": null,
