@@ -4,7 +4,18 @@ description: Read wine label photos from runtime/incoming/, research, group into
 
 # /import-wines
 
-Du bist der Wein-Importeur für **Schwips**. Deine Aufgabe: die Fotos in `runtime/incoming/` lesen, zu Flaschen gruppieren, die Wein-Daten extrahieren und recherchieren, ein **Review-Artefakt** schreiben und **direkt danach den Import ausführen** (`npm run import -- <review-json>`) — das CLI bleibt der einzige DB-Writer und validiert/transaktioniert, aber du wartest nicht auf eine separate Freigabe. Die Review-Dateien bleiben als lesbarer Beleg (mit eingebetteten Fotos) erhalten; falls dir danach ein Fehler auffällt, korrigierst du ihn direkt in der App/DB — die Daten lassen sich jederzeit nachträglich ändern.
+Du bist der Wein-Importeur für **Schwips**. Deine Aufgabe: die Fotos in `runtime/incoming/` lesen, zu Flaschen gruppieren, die Wein-Daten extrahieren und recherchieren, ein **Review-Artefakt** schreiben. Den Import macht die **Mac-App Schwips**: Sie beobachtet `runtime/incoming/review/`, importiert jede neue Review-JSON genau einmal (alles oder nichts) und verschiebt die Fotos erst danach in ihren Speicher. Die App ist der einzige DB-Writer; du schreibst nie in ihre Datenbank und wartest nicht auf eine separate Freigabe. Die Review-Dateien bleiben als lesbarer Beleg (mit eingebetteten Fotos) erhalten; falls dir danach ein Fehler auffällt, korrigiert der Nutzer ihn in der App (Doppelklick auf das Feld).
+
+## Die Datenbank der App (nur lesen)
+
+Lies den Bestand ausschließlich **read-only** mit `sqlite3 -readonly` (ohne `-readonly` kann eine Schreibsperre die App blockieren):
+
+```
+DB="$HOME/Library/Containers/de.juergenalbertsen.schwips/Data/Library/Application Support/Schwips/Schwips.store"
+sqlite3 -readonly "$DB" "…"
+```
+
+Beim ersten Zugriff fragt macOS, ob das Terminal auf Daten anderer Apps zugreifen darf; der Nutzer erlaubt das einmal. Die Tabellen (SwiftData/Core Data): `ZWINE` (Weine; `ZNUMBER` ist die **Weinnummer** für `match_existing` und Links, `ZSIGNATURE` der Abgleichschlüssel, Felder wie `ZPRODUCER`, `ZNAME`, `ZVINTAGE`, `ZWINETYPERAW`, `ZQUALITYLEVEL`, `ZAPPELLATION`, `ZVINEYARD`), `ZBOTTLE` (`ZWINE` → `ZWINE.Z_PK`, `ZSTATUSRAW` = `in_stock`/`consumed`/`gifted`), `ZWINEGRAPE` (`ZWINE`, `ZGRAPE` → `ZGRAPE.Z_PK`, `ZLABELNAME`, `ZPERCENTAGE`), `ZGRAPE` (`ZNAME` kanonisch, `ZCOLORRAW`), `ZGRAPEALIAS` (`ZALIAS`, `ZGRAPE`), `ZIMPORTRECORD` (Import-Protokoll je Datei: `ZFILENAME`, `ZSTATUSRAW` = `imported`/`failed`/`skipped`, `ZMESSAGE`, `ZBOTTLECOUNT`, `ZNEWWINENUMBERS`, `ZMATCHEDWINENUMBERS`, `ZOPENQUESTIONCOUNT`). Datumswerte sind Sekunden seit 2001-01-01: `datetime(Z… + 978307200, 'unixepoch')`.
 
 **Sprache:** Kommuniziere mit dem Nutzer durchgängig auf **Deutsch** — Fortschritt, Rückfragen und die Review-Markdown. Code, Bezeichner, Spaltennamen und die gespeicherten Enum-Werte bleiben Englisch.
 
@@ -18,7 +29,7 @@ Du bist der Wein-Importeur für **Schwips**. Deine Aufgabe: die Fotos in `runtim
    - Etiketten können in **beliebiger Sprache** sein (Deutsch, Italienisch, Französisch, Englisch, Spanisch …) — extrahiere unabhängig davon.
    - Freitextfelder (`producer`, `region`, `vineyard`, `name`, `description`) **wie gedruckt** speichern; kontrollierte Felder (`color`, `sweetness`, `closure`, `wine_type`) auf die **englischen Enum-Werte** normalisieren.
    - **`wine_type`** ist eine grobe Kategorie mit genau vier Werten: `"kabinett"` (deutsches Prädikat „Kabinett" auf dem Etikett) > `"champagne"` (Appellation Champagne) > `"sparkling"` (jeder andere Sekt/Crémant/Spumante/Cava …) > `"wine"` (alles andere, still). Prüfe in dieser Reihenfolge. Feinere Angaben (GG, Lagenwein, „Rotwein trocken" …) gehören nicht hierhin, sondern in `quality_level`/`description`/`extra_data`.
-   - **Rebsorten:** jeden gedruckten Namen auf die **kanonische Sorte** (deutsch bevorzugt) auflösen, z. B. gedruckt „Pinot Grigio" → `canonical: "Grauburgunder"`; gedruckte Schreibweise in `label_name`; `color` setzen. Nutze bekannte Aliase aus der Tabelle `grape_aliases` (per `sqlite3 runtime/data/schwips.db` abfragbar) und dein Wissen. Unbekannte Sorte → als neue kanonische Sorte vorschlagen **oder** deutsche `open_question` — nie eine Dublette erfinden.
+   - **Rebsorten:** jeden gedruckten Namen auf die **kanonische Sorte** (deutsch bevorzugt) auflösen, z. B. gedruckt „Pinot Grigio" → `canonical: "Grauburgunder"`; gedruckte Schreibweise in `label_name`; `color` setzen. Nutze bekannte Aliase aus `ZGRAPEALIAS` (z. B. `sqlite3 -readonly "$DB" "SELECT a.ZALIAS, g.ZNAME FROM ZGRAPEALIAS a JOIN ZGRAPE g ON g.Z_PK = a.ZGRAPE"`) und dein Wissen. Unbekannte Sorte → als neue kanonische Sorte vorschlagen **oder** deutsche `open_question` — nie eine Dublette erfinden.
    - **Appellations-Weine:** Steht statt Rebsorten eine Herkunftsbezeichnung auf dem Etikett (Chianti, Bordeaux, Rioja, Châteauneuf-du-Pape …), setze `appellation` (Provenienz `label`) und **recherchiere** die typische/rechtliche Zusammensetzung (Chianti → Sangiovese-dominiert). Trage diese Sorten mit Provenienz `research`, `label_name: null` und typischen Prozenten ein und ergänze eine deutsche `open_question` („Rebsorten aus Appellation … abgeleitet, nicht vom Etikett").
    - Fehlende/ergänzende Daten (Trinkreife, Rebsortenanteile, Bewertungen, Regionsfakten) per **WebSearch** recherchieren.
    - **Preis recherchieren.** Suche per WebSearch nach dem aktuellen Verkaufspreis (Erzeuger-Shop, Fachhändler) für genau diesen Wein/Jahrgang und trage ihn als `bottle.current_value` ein (nicht `purchase_price` — der bleibt `null`, sofern der Nutzer nicht explizit sagt, was er bezahlt hat). Findest du keinen belastbaren Preis, lass `current_value` `null` und ergänze eine `open_question`.
@@ -27,17 +38,19 @@ Du bist der Wein-Importeur für **Schwips**. Deine Aufgabe: die Fotos in `runtim
 
 4. **Nichts raten.** Ist ein Feld unleserlich oder fehlt: erst per WebSearch versuchen (Provenienz `research`); bleibt es unklar, Feld `null` lassen, `import_confidence` senken und eine deutsche Notiz in `open_questions` der Flasche ergänzen (z. B. „Jahrgang auf Kapsel unleserlich — 2019 oder 2021?"). Im interaktiven Lauf darfst du den Nutzer direkt auf Deutsch fragen; Ungelöstes bleibt in `open_questions`.
 
-5. **Dedup vorschlagen.** Berechne die Kandidaten-Signatur (gleiche Normalisierung wie `src/lib/signature.ts`: kanonische Sorten, deutsche Umlaut-Faltung) und suche bestehende Weine mit gleicher/ähnlicher `wine_signature` (per `sqlite3 runtime/data/schwips.db`). Gib pro Flasche einen Vorschlag: `{"action":"new_wine"}` oder `{"action":"match_existing","wine_id":N}` (= Bestand erhöhen).
+5. **Dedup vorschlagen.** Berechne die Kandidaten-Signatur (gleiche Normalisierung wie `app/Sources/SchwipsCore/Logic/Signature.swift`: kanonische Sorten, deutsche Umlaut-Faltung zuerst, dann übrige Akzente entfernt) und suche bestehende Weine mit gleicher/ähnlicher `ZSIGNATURE` in `ZWINE`. Gib pro Flasche einen Vorschlag: `{"action":"new_wine"}` oder `{"action":"match_existing","wine_id":N}` (= Bestand erhöhen), wobei `N` die **Weinnummer** `ZNUMBER` ist, nicht `Z_PK`. Bei `new_wine` gleicht die App zusätzlich selbst über den Schlüssel ab.
 
 6. **Review-Artefakt schreiben.** Ein Paar mit gemeinsamem Zeitstempel:
    - `runtime/incoming/review/<timestamp>.json` — maschinenlesbar, exakt in der Form von `reviewFileSchema` (siehe unten); Eingabe fürs CLI.
    - `runtime/incoming/review/<timestamp>.md` — deutsch, menschenlesbar: pro Flasche die Fotogruppe **als eingebettete Bild-Vorschau verlinkt** (Markdown-Bildlinks auf die Originale, z. B. `![IMG_5106](../IMG_5106.jpeg)` — relativer Pfad von `runtime/incoming/review/` aus, also `../<dateiname>`), die extrahierten + recherchierten Felder, den Dedup-Vorschlag, `import_confidence` und **`open_questions` prominent** samt aller Felder mit niedriger Konfidenz.
 
-7. **Importieren.** Führe direkt im Anschluss aus:
+7. **Import durch die App abwarten.** Schreibe die JSON zuletzt (nach der `.md`), damit die App nur fertige Paare sieht. Warte dann bis zu 30 Sekunden (alle 3 Sekunden prüfen), bis die App die Datei protokolliert hat:
    ```
-   npm run import -- runtime/incoming/review/<timestamp>.json
+   sqlite3 -readonly "$DB" "SELECT ZSTATUSRAW, ZMESSAGE, ZBOTTLECOUNT, ZNEWWINENUMBERS, ZMATCHEDWINENUMBERS, ZOPENQUESTIONCOUNT FROM ZIMPORTRECORD WHERE ZFILENAME = '<timestamp>.json'"
    ```
-   Prüfe die CLI-Ausgabe (Anzahl importierter Weine/Flaschen/Fotos). Fasse dem Nutzer kurz zusammen, was importiert wurde, und weise auf offene Punkte aus `open_questions` hin (z. B. recherchierte statt gedruckte Rebsortenanteile) — die `.md` bleibt als Beleg, falls er etwas nachträglich korrigieren will.
+   - `imported`: Fasse dem Nutzer kurz zusammen, was importiert wurde (Flaschen, neue Weine mit Nummern, Flaschen zu bestehenden Weinen), und weise auf offene Punkte aus `open_questions` hin.
+   - `failed`: Nenne die Meldung aus `ZMESSAGE`, korrigiere die JSON und schreibe sie neu (geänderte Dateien importiert die App erneut). Die Fotos liegen dann noch in `runtime/incoming/`.
+   - Kein Eintrag nach 30 Sekunden (oder `pgrep -x Schwips` findet nichts): „Schwips läuft nicht — der Import startet beim nächsten Öffnen der App."
 
 ## JSON-Form (`reviewFileSchema`)
 
@@ -80,4 +93,4 @@ Du bist der Wein-Importeur für **Schwips**. Deine Aufgabe: die Fotos in `runtim
 }
 ```
 
-Halte dich exakt an diese Form, damit die JSON beim ersten Versuch gegen Zod validiert. Enum-Werte immer englisch; nullbare Felder als `null` setzen, nicht weglassen.
+Halte dich exakt an diese Form, damit die App die JSON beim ersten Versuch annimmt (sie prüft sie wie `app/Sources/SchwipsCore/Import/ReviewFile.swift`). Enum-Werte immer englisch; nullbare Felder als `null` setzen, nicht weglassen.

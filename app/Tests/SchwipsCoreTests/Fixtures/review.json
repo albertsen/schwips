@@ -1,0 +1,479 @@
+{
+  "generated_at": "2026-11-21T14:16:47Z",
+  "bottles": [
+    {
+      "photos": ["IMG_5629.jpeg", "IMG_5630.jpeg"],
+      "dedup": { "action": "new_wine" },
+      "confidence": 0.75,
+      "open_questions": [
+        "Rebsorte (100 % Sangiovese) aus Appellation Brunello di Montalcino abgeleitet, nicht vom Etikett.",
+        "Adagio ist eine Handelsmarke (Abfüller-Code ICQRF 9651/SI), der eigentliche Erzeuger steht nicht auf dem Etikett.",
+        "Preis nur aus US-Handel (Flatiron Wines, ca. 33 USD) geschätzt — kein deutscher Händlerpreis gefunden."
+      ],
+      "wine": {
+        "producer": "Adagio",
+        "name": null,
+        "vintage": 2021,
+        "wine_type": "wine",
+        "color": "red",
+        "sweetness": "dry",
+        "quality_level": "DOCG",
+        "region": "Montalcino, Toskana",
+        "country": "Italien",
+        "appellation": "Brunello di Montalcino",
+        "vineyard": null,
+        "abv": 14.0,
+        "residual_sugar_gl": null,
+        "acidity_gl": null,
+        "drink_from": 2026,
+        "drink_until": 2040,
+        "description": "Brunello di Montalcino DOCG aus dem als sehr stark bewerteten Jahrgang 2021; gemäß DOCG-Vorschrift mindestens 5 Jahre Reifung (davon min. 2 Jahre im Holzfass) vor Freigabe.",
+        "food_pairing": "Wildgerichte, Braten, Bistecca alla Fiorentina, gereifter Pecorino",
+        "serving_temp_c": "17-18",
+        "closure": "cork",
+        "is_organic": null,
+        "is_vegan": null,
+        "external_links": [
+          "https://sf.flatiron-wines.com/products/adagio-brunello-di-montalcino-2021-750ml",
+          "https://flaskfinewines.com/products/adagio-brunello-di-montalcino-2021"
+        ],
+        "extra_data": {
+          "abfueller": "ICQRF 9651/SI-IT Montalcino - Italia",
+          "los": "L.21-26L",
+          "ean": "8053629461808",
+          "bewertungen": "James Suckling 93 Punkte"
+        },
+        "data_sources": {
+          "producer": "label",
+          "vintage": "label",
+          "wine_type": "label",
+          "color": "label",
+          "sweetness": "research",
+          "quality_level": "label",
+          "region": "label",
+          "country": "label",
+          "appellation": "label",
+          "abv": "label",
+          "drink_from": "research",
+          "drink_until": "research",
+          "description": "research",
+          "food_pairing": "research",
+          "serving_temp_c": "research",
+          "closure": "user"
+        },
+        "import_confidence": 0.75,
+        "grapes": [
+          { "canonical": "Sangiovese", "label_name": null, "color": "red", "percentage": 100 }
+        ]
+      },
+      "bottle": {
+        "bottle_size_ml": 750,
+        "location": null,
+        "purchase_date": null,
+        "purchase_price": null,
+        "purchase_vendor": null,
+        "current_value": 30,
+        "status": "in_stock",
+        "consumed_date": null,
+        "personal_rating": null
+      }
+    },
+    {
+      "photos": ["IMG_5631.jpeg", "IMG_5632.jpeg"],
+      "dedup": { "action": "new_wine" },
+      "confidence": 0.75,
+      "open_questions": [
+        "Rebsorten (Corvina, Rondinella) aus Händlerangabe/Appellation abgeleitet, nicht vom Etikett; Anteile unbekannt (laut DOCG ist auch Corvinone zulässig).",
+        "Erzeuger: Etikett nennt vorne „Famiglia Cielo“, hinten Abfüller „Cielo e Terra S.p.A.“ — als Erzeuger „Cielo e Terra“ übernommen."
+      ],
+      "wine": {
+        "producer": "Cielo e Terra",
+        "name": "AmaRegi Riserva",
+        "vintage": 2019,
+        "wine_type": "wine",
+        "color": "red",
+        "sweetness": "dry",
+        "quality_level": "DOCG",
+        "region": "Valpolicella, Venetien",
+        "country": "Italien",
+        "appellation": "Amarone della Valpolicella",
+        "vineyard": null,
+        "abv": 16.0,
+        "residual_sugar_gl": null,
+        "acidity_gl": null,
+        "drink_from": 2024,
+        "drink_until": 2032,
+        "description": "Amarone della Valpolicella Riserva aus getrockneten Trauben (3–4 Monate Appassimento), ca. 4 Jahre Ausbau im Eichenfass. Laut Etikett ein „echter Meditationswein“, mindestens 30 Minuten vor dem Genuss atmen lassen.",
+        "food_pairing": "Geschmortes Rind, Wild, Risotto all'Amarone, gereifter Hartkäse",
+        "serving_temp_c": "16-18",
+        "closure": "cork",
+        "is_organic": null,
+        "is_vegan": null,
+        "external_links": [
+          "https://perfectewijn.nl/en/products/amaregis-amarone-della-valpolicella-riserva",
+          "https://www.falstaff.com/en/wines/cielo-e-terra-2018-amaregi-amarone-della-valpolicella-riserva-docg"
+        ],
+        "extra_data": {
+          "marke": "Famiglia Cielo (Cielo 1908)",
+          "riserva": true,
+          "abfueller": "IT VR 2527 – Cielo e Terra S.p.A., Montorso Vicentino",
+          "importeur_uk": "Bancroft Wines Ltd, London",
+          "los": "L.04122025 16:19",
+          "ean": "8008900003420",
+          "naehrwerte_100ml": "400 kJ / 95 kcal",
+          "hinweis": "Mindestens 30 Minuten vor dem Genuss atmen lassen",
+          "bewertungen": "Falstaff 88 Punkte (Jahrgang 2018)"
+        },
+        "data_sources": {
+          "producer": "label",
+          "name": "label",
+          "vintage": "label",
+          "wine_type": "label",
+          "color": "label",
+          "sweetness": "research",
+          "quality_level": "label",
+          "region": "research",
+          "country": "label",
+          "appellation": "label",
+          "abv": "label",
+          "drink_from": "research",
+          "drink_until": "research",
+          "description": "research",
+          "food_pairing": "research",
+          "serving_temp_c": "research",
+          "closure": "user"
+        },
+        "import_confidence": 0.75,
+        "grapes": [
+          { "canonical": "Corvina", "label_name": null, "color": "red", "percentage": null },
+          { "canonical": "Rondinella", "label_name": null, "color": "red", "percentage": null }
+        ]
+      },
+      "bottle": {
+        "bottle_size_ml": 750,
+        "location": null,
+        "purchase_date": null,
+        "purchase_price": null,
+        "purchase_vendor": null,
+        "current_value": 26.95,
+        "status": "in_stock",
+        "consumed_date": null,
+        "personal_rating": null
+      }
+    },
+    {
+      "photos": ["IMG_5633.jpeg", "IMG_5634.jpeg"],
+      "dedup": { "action": "new_wine" },
+      "confidence": 0.8,
+      "open_questions": [
+        "Rebsorte (100 % Nebbiolo) aus Appellation Barolo abgeleitet, nicht vom Etikett.",
+        "Preis nur aus US-Durchschnitt (Wine-Searcher, ca. 28–31 USD) geschätzt."
+      ],
+      "wine": {
+        "producer": "Gioso",
+        "name": null,
+        "vintage": 2020,
+        "wine_type": "wine",
+        "color": "red",
+        "sweetness": "dry",
+        "quality_level": "DOCG",
+        "region": "Castiglione Falletto, Piemont",
+        "country": "Italien",
+        "appellation": "Barolo",
+        "vineyard": null,
+        "abv": 14.0,
+        "residual_sugar_gl": null,
+        "acidity_gl": null,
+        "drink_from": 2025,
+        "drink_until": 2035,
+        "description": "Barolo DOCG von der Azienda Agricola Gioso (Giovanni Sordo) aus Castiglione Falletto; Ausbau in Edelstahl und großen Holzfässern. Florale Nase, Kirsche, feste Tannine.",
+        "food_pairing": "Brasato al Barolo, Trüffelgerichte, Wild, gereifter Käse",
+        "serving_temp_c": "17-18",
+        "closure": "cork",
+        "is_organic": null,
+        "is_vegan": null,
+        "external_links": [
+          "http://www.gioso.wine",
+          "https://www.wine-searcher.com/find/gioso+docg+barolo+piemonte+italy"
+        ],
+        "extra_data": {
+          "abfueller": "Azienda Agricola Gioso, Castiglione Falletto",
+          "los": "L 25031A",
+          "ean": "8026237002237",
+          "website": "www.gioso.wine",
+          "verschluss_material": "Tappo FOR51 Sughero, Capsula C/PVC 90"
+        },
+        "data_sources": {
+          "producer": "label",
+          "vintage": "label",
+          "wine_type": "label",
+          "color": "research",
+          "sweetness": "research",
+          "quality_level": "label",
+          "region": "label",
+          "country": "label",
+          "appellation": "label",
+          "abv": "label",
+          "drink_from": "research",
+          "drink_until": "research",
+          "description": "research",
+          "food_pairing": "research",
+          "serving_temp_c": "research",
+          "closure": "user"
+        },
+        "import_confidence": 0.8,
+        "grapes": [
+          { "canonical": "Nebbiolo", "label_name": null, "color": "red", "percentage": 100 }
+        ]
+      },
+      "bottle": {
+        "bottle_size_ml": 750,
+        "location": null,
+        "purchase_date": null,
+        "purchase_price": null,
+        "purchase_vendor": null,
+        "current_value": 28,
+        "status": "in_stock",
+        "consumed_date": null,
+        "personal_rating": null
+      }
+    },
+    {
+      "photos": ["IMG_5635.jpeg", "IMG_5636.jpeg"],
+      "dedup": { "action": "new_wine" },
+      "confidence": 0.7,
+      "open_questions": [
+        "Rebsorten nicht auf dem Etikett; laut Händlern Merlot 60 % / Cabernet Sauvignon 40 % (ältere Jahrgänge teils 50/50) — bitte ggf. prüfen.",
+        "Kein belastbarer Preis für Jahrgang 2024 gefunden — current_value leer gelassen."
+      ],
+      "wine": {
+        "producer": "Micheletti",
+        "name": null,
+        "vintage": 2024,
+        "wine_type": "wine",
+        "color": "red",
+        "sweetness": "dry",
+        "quality_level": "DOC",
+        "region": "Bolgheri, Toskana",
+        "country": "Italien",
+        "appellation": "Bolgheri",
+        "vineyard": null,
+        "abv": 13.5,
+        "residual_sugar_gl": null,
+        "acidity_gl": null,
+        "drink_from": 2025,
+        "drink_until": 2030,
+        "description": "Bolgheri Rosso DOC vom Familienweingut Micheletti in Castagneto Carducci; ca. 10 Monate Ausbau im Betontank. Rote Beeren (v. a. Himbeere), weiche Tannine, frische Säure.",
+        "food_pairing": "Gegrilltes Fleisch, Pasta mit Ragù, Salumi, mittelgereifter Käse",
+        "serving_temp_c": "16-18",
+        "closure": "cork",
+        "is_organic": null,
+        "is_vegan": null,
+        "external_links": [
+          "https://www.michelettiwine.com",
+          "https://carlolotti.com/it/bolgheri-e-val-di-cornia/1508-micheletti-bolgheri-rosso-2024.html",
+          "https://www.divinegolositatoscane.it/it/vino/6767-micheletti-bolgheri-rosso-2024-ml-750.html"
+        ],
+        "extra_data": {
+          "tipologia": "Rosso",
+          "abfueller": "Imbottigliato all'origine da Società Agricola Micheletti S.S., Castagneto Carducci (LI)",
+          "los": "L.248",
+          "naehrwerte_100ml": "328 kJ / 78,4 kcal",
+          "website": "www.michelettiwine.com"
+        },
+        "data_sources": {
+          "producer": "label",
+          "vintage": "label",
+          "wine_type": "label",
+          "color": "label",
+          "sweetness": "research",
+          "quality_level": "label",
+          "region": "label",
+          "country": "label",
+          "appellation": "label",
+          "abv": "label",
+          "drink_from": "research",
+          "drink_until": "research",
+          "description": "research",
+          "food_pairing": "research",
+          "serving_temp_c": "research",
+          "closure": "user"
+        },
+        "import_confidence": 0.7,
+        "grapes": [
+          { "canonical": "Merlot", "label_name": null, "color": "red", "percentage": 60 },
+          { "canonical": "Cabernet Sauvignon", "label_name": null, "color": "red", "percentage": 40 }
+        ]
+      },
+      "bottle": {
+        "bottle_size_ml": 750,
+        "location": null,
+        "purchase_date": null,
+        "purchase_price": null,
+        "purchase_vendor": null,
+        "current_value": null,
+        "status": "in_stock",
+        "consumed_date": null,
+        "personal_rating": null
+      }
+    },
+    {
+      "photos": ["IMG_5637.jpeg", "IMG_5638.jpeg"],
+      "dedup": { "action": "new_wine" },
+      "confidence": 0.8,
+      "open_questions": [
+        "Rebsorte (Sangiovese) aus Appellation Chianti Classico/Händlerangaben abgeleitet, nicht vom Etikett; Anteil unbekannt (DOCG: mind. 80 %).",
+        "Preis aus UK-Handel (Eurowines, 15,98 GBP) umgerechnet — kein deutscher Händlerpreis gefunden."
+      ],
+      "wine": {
+        "producer": "Donna Laura",
+        "name": "Bramosia",
+        "vintage": 2023,
+        "wine_type": "wine",
+        "color": "red",
+        "sweetness": "dry",
+        "quality_level": "DOCG",
+        "region": "Castelnuovo Berardenga, Toskana",
+        "country": "Italien",
+        "appellation": "Chianti Classico",
+        "vineyard": null,
+        "abv": 13.5,
+        "residual_sugar_gl": null,
+        "acidity_gl": null,
+        "drink_from": 2025,
+        "drink_until": 2030,
+        "description": "Chianti Classico DOCG; temperaturkontrollierte Gärung, ca. 10 % des Weins 9 Monate im Tonneau, der Rest im Edelstahl. Tiefes Rubinrot, Kirsche und rote Frucht.",
+        "food_pairing": "Pasta mit Tomatensauce, Pizza, gegrilltes Fleisch, Salumi",
+        "serving_temp_c": "16-18",
+        "closure": "cork",
+        "is_organic": null,
+        "is_vegan": null,
+        "external_links": [
+          "https://www.eurowines.co.uk/wine-detail/chianti-classico-docg-bramosia",
+          "https://www.willowpark.net/products/donna-laura-bramosia-chianti-classico"
+        ],
+        "extra_data": {
+          "motto": "Venere in dolce compagnia di Bacco e Cupido",
+          "siegel": "Gallo Nero (Consorzio Chianti Classico)",
+          "abfueller": "Donna Laura SRL, Castelnuovo Berardenga (SI)",
+          "los": "L.255",
+          "ean": "8054377050030"
+        },
+        "data_sources": {
+          "producer": "label",
+          "name": "label",
+          "vintage": "label",
+          "wine_type": "label",
+          "color": "label",
+          "sweetness": "research",
+          "quality_level": "label",
+          "region": "label",
+          "country": "label",
+          "appellation": "label",
+          "abv": "label",
+          "drink_from": "research",
+          "drink_until": "research",
+          "description": "research",
+          "food_pairing": "research",
+          "serving_temp_c": "research",
+          "closure": "user"
+        },
+        "import_confidence": 0.8,
+        "grapes": [
+          { "canonical": "Sangiovese", "label_name": null, "color": "red", "percentage": null }
+        ]
+      },
+      "bottle": {
+        "bottle_size_ml": 750,
+        "location": null,
+        "purchase_date": null,
+        "purchase_price": null,
+        "purchase_vendor": null,
+        "current_value": 18.5,
+        "status": "in_stock",
+        "consumed_date": null,
+        "personal_rating": null
+      }
+    },
+    {
+      "photos": ["IMG_5639.jpeg", "IMG_5640.jpeg"],
+      "dedup": { "action": "new_wine" },
+      "confidence": 0.7,
+      "open_questions": [
+        "Rebsorten nicht auf dem Etikett; Quellen widersprüchlich — überwiegend Sangiovese (Prugnolo Gentile) mit kleinen Anteilen Cabernet Sauvignon und Petit Verdot angenommen, Anteile unbekannt.",
+        "Preis aus Schweizer Handel (vicampo.ch, 21,90 CHF) umgerechnet."
+      ],
+      "wine": {
+        "producer": "Tenuta Trerose",
+        "name": "Palio della Rosa Riserva",
+        "vintage": 2021,
+        "wine_type": "wine",
+        "color": "red",
+        "sweetness": "dry",
+        "quality_level": "DOCG",
+        "region": "Montepulciano, Toskana",
+        "country": "Italien",
+        "appellation": "Vino Nobile di Montepulciano",
+        "vineyard": null,
+        "abv": 14.0,
+        "residual_sugar_gl": null,
+        "acidity_gl": null,
+        "drink_from": 2025,
+        "drink_until": 2033,
+        "description": "Vino Nobile di Montepulciano Riserva der Tenuta Trerose (Tenimenti Angelini), Sangiovese-dominiert, im Holz ausgebaut.",
+        "food_pairing": "Wild, Lamm, Braten, Pici al ragù, gereifter Pecorino",
+        "serving_temp_c": "16-18",
+        "closure": "cork",
+        "is_organic": null,
+        "is_vegan": null,
+        "external_links": [
+          "https://www.vicampo.ch/trerose-palio-della-rosa-vino-nobile-di-montepulciano-riserva-pdp-p207168-c113",
+          "https://www.wineinblack.nl/products/trerose-palio-della-rosa-vino-nobile-di-montepulciano-riserva-2021"
+        ],
+        "extra_data": {
+          "riserva": true,
+          "abfueller": "Integralmente prodotto e imbottigliato da Tenuta Trerose Società Agricola a r.l., Montepulciano",
+          "los": "L24087",
+          "ean": "8000087269316",
+          "bewertungen": "Berliner Wein Trophy Gold (Jahrgang 2018)"
+        },
+        "data_sources": {
+          "producer": "label",
+          "name": "label",
+          "vintage": "label",
+          "wine_type": "label",
+          "color": "research",
+          "sweetness": "research",
+          "quality_level": "label",
+          "region": "label",
+          "country": "label",
+          "appellation": "label",
+          "abv": "label",
+          "drink_from": "research",
+          "drink_until": "research",
+          "description": "research",
+          "food_pairing": "research",
+          "serving_temp_c": "research",
+          "closure": "user"
+        },
+        "import_confidence": 0.7,
+        "grapes": [
+          { "canonical": "Sangiovese", "label_name": null, "color": "red", "percentage": null },
+          { "canonical": "Cabernet Sauvignon", "label_name": null, "color": "red", "percentage": null },
+          { "canonical": "Petit Verdot", "label_name": null, "color": "red", "percentage": null }
+        ]
+      },
+      "bottle": {
+        "bottle_size_ml": 750,
+        "location": null,
+        "purchase_date": null,
+        "purchase_price": null,
+        "purchase_vendor": null,
+        "current_value": 23,
+        "status": "in_stock",
+        "consumed_date": null,
+        "personal_rating": null
+      }
+    }
+  ]
+}

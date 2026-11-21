@@ -1,0 +1,631 @@
+[
+ {
+  "producer": "Bamberger",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Blanc de Noir Brut · Tradition",
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Spätburgunder"
+  ],
+  "signature": "bamberger|2023|||blanc de noir brut · tradition|deutscher sekt b.a.|sparkling|spatburgunder"
+ },
+ {
+  "producer": "Bamberger",
+  "vintage": 2019,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Pinot Rosé Brut Nature · Prestige",
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Spätburgunder"
+  ],
+  "signature": "bamberger|2019|||pinot rose brut nature · prestige|deutscher sekt b.a.|sparkling|spatburgunder"
+ },
+ {
+  "producer": "Bamberger",
+  "vintage": 2018,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Riesling Brut Nature · Prestige",
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "bamberger|2018|||riesling brut nature · prestige|deutscher sekt b.a.|sparkling|riesling"
+ },
+ {
+  "producer": "Bamberger",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": "Meddersheimer Rheingrafenberg",
+  "name": null,
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Weißburgunder"
+  ],
+  "signature": "bamberger|2023||meddersheimer rheingrafenberg||deutscher qualitatswein|wine|weissburgunder"
+ },
+ {
+  "producer": "Bamberger",
+  "vintage": 2019,
+  "appellation": null,
+  "vineyard": "Meddersheimer Altenberg",
+  "name": "Réserve",
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "bamberger|2019||meddersheimer altenberg|reserve|deutscher qualitatswein|wine|riesling"
+ },
+ {
+  "producer": "Bamberger",
+  "vintage": 2022,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Rosé Brut · Tradition",
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Weißburgunder",
+   "Spätburgunder",
+   "Acolon",
+   "Dornfelder"
+  ],
+  "signature": "bamberger|2022|||rose brut · tradition|deutscher sekt b.a.|sparkling|acolon,dornfelder,spatburgunder,weissburgunder"
+ },
+ {
+  "producer": "Korrell",
+  "vintage": 2024,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Little Lion Weiß",
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Weißburgunder",
+   "Müller-Thurgau",
+   "Riesling"
+  ],
+  "signature": "korrell|2024|||little lion weiss|deutscher qualitatswein|wine|muller-thurgau,riesling,weissburgunder"
+ },
+ {
+  "producer": "Korrell",
+  "vintage": 2024,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Riesling Kabinett Kreuznach feinherb",
+  "quality_level": "Deutscher Prädikatswein",
+  "wine_type": "kabinett",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "korrell|2024|||riesling kabinett kreuznach feinherb|deutscher pradikatswein|kabinett|riesling"
+ },
+ {
+  "producer": "Korrell",
+  "vintage": 2025,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Sauvignon Blanc",
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Sauvignon Blanc"
+  ],
+  "signature": "korrell|2025|||sauvignon blanc|deutscher qualitatswein|wine|sauvignon blanc"
+ },
+ {
+  "producer": "Korrell",
+  "vintage": 2024,
+  "appellation": null,
+  "vineyard": "Kreuznacher Paradies",
+  "name": "Paradies",
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "korrell|2024||kreuznacher paradies|paradies|deutscher qualitatswein|wine|riesling"
+ },
+ {
+  "producer": "Fischborn-Schenk",
+  "vintage": 2024,
+  "appellation": null,
+  "vineyard": "Biebelsheimer Kieselberg",
+  "name": null,
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Chardonnay"
+  ],
+  "signature": "fischborn-schenk|2024||biebelsheimer kieselberg||deutscher qualitatswein|wine|chardonnay"
+ },
+ {
+  "producer": "Fischborn-Schenk",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": "Biebelsheimer Kieselberg",
+  "name": null,
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "fischborn-schenk|2023||biebelsheimer kieselberg||deutscher qualitatswein|wine|riesling"
+ },
+ {
+  "producer": "Fischborn-Schenk",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": null,
+  "name": null,
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "kabinett",
+  "grapes": [
+   "Scheurebe"
+  ],
+  "signature": "fischborn-schenk|2023||||deutscher qualitatswein|kabinett|scheurebe"
+ },
+ {
+  "producer": "Fischborn-Schenk",
+  "vintage": null,
+  "appellation": null,
+  "vineyard": null,
+  "name": null,
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "fischborn-schenk|||||deutscher sekt b.a.|sparkling|riesling"
+ },
+ {
+  "producer": "Fischborn-Schenk",
+  "vintage": null,
+  "appellation": null,
+  "vineyard": null,
+  "name": null,
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Spätburgunder"
+  ],
+  "signature": "fischborn-schenk|||||deutscher sekt b.a.|sparkling|spatburgunder"
+ },
+ {
+  "producer": "Fischborn-Schenk",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": "Kreuznacher Römerhelde",
+  "name": null,
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Grauburgunder"
+  ],
+  "signature": "fischborn-schenk|2023||kreuznacher romerhelde||deutscher qualitatswein|wine|grauburgunder"
+ },
+ {
+  "producer": "Diel",
+  "vintage": null,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Pinot de Diel Brut",
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Grauburgunder",
+   "Weißburgunder",
+   "Spätburgunder"
+  ],
+  "signature": "diel||||pinot de diel brut|deutscher sekt b.a.|sparkling|grauburgunder,spatburgunder,weissburgunder"
+ },
+ {
+  "producer": "Diel",
+  "vintage": null,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Pinot de Diel Rosé",
+  "quality_level": "Deutscher Sekt b.A.",
+  "wine_type": "sparkling",
+  "grapes": [
+   "Weißburgunder",
+   "Spätburgunder"
+  ],
+  "signature": "diel||||pinot de diel rose|deutscher sekt b.a.|sparkling|spatburgunder,weissburgunder"
+ },
+ {
+  "producer": "Diel",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": "Dorsheimer Eierfels",
+  "name": "Eierfels",
+  "quality_level": "VDP.Ortswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "diel|2023||dorsheimer eierfels|eierfels|vdp.ortswein|wine|riesling"
+ },
+ {
+  "producer": "Diel",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": "Burg Layer Schlossberg",
+  "name": "Burg Layer Schlossberg",
+  "quality_level": "VDP.Erste Lage",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "diel|2023||burg layer schlossberg|burg layer schlossberg|vdp.erste lage|wine|riesling"
+ },
+ {
+  "producer": "Diel",
+  "vintage": 2024,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Nahesteiner Grauburgunder",
+  "quality_level": "VDP.Gutswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Grauburgunder"
+  ],
+  "signature": "diel|2024|||nahesteiner grauburgunder|vdp.gutswein|wine|grauburgunder"
+ },
+ {
+  "producer": "Diel",
+  "vintage": 2024,
+  "appellation": null,
+  "vineyard": "Dorsheim Goldloch",
+  "name": "Goldloch",
+  "quality_level": "VDP.Grosse Lage",
+  "wine_type": "kabinett",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "diel|2024||dorsheim goldloch|goldloch|vdp.grosse lage|kabinett|riesling"
+ },
+ {
+  "producer": "Diel",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": "Dorsheim Goldloch",
+  "name": "Goldloch GG",
+  "quality_level": "VDP.Grosse Lage",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "diel|2023||dorsheim goldloch|goldloch gg|vdp.grosse lage|wine|riesling"
+ },
+ {
+  "producer": "Diel",
+  "vintage": 2024,
+  "appellation": null,
+  "vineyard": "Dorsheim Pittermännchen",
+  "name": "Pittermännchen",
+  "quality_level": "VDP.Grosse Lage",
+  "wine_type": "kabinett",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "diel|2024||dorsheim pittermannchen|pittermannchen|vdp.grosse lage|kabinett|riesling"
+ },
+ {
+  "producer": "Diel",
+  "vintage": 2018,
+  "appellation": null,
+  "vineyard": "Burg Layer Schlossberg",
+  "name": "Burg Layer Schlossberg",
+  "quality_level": "VDP.Erste Lage",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "diel|2018||burg layer schlossberg|burg layer schlossberg|vdp.erste lage|wine|riesling"
+ },
+ {
+  "producer": "Atamisque",
+  "vintage": 2023,
+  "appellation": "Valle de Uco",
+  "vineyard": "Tupungato, 1.300 m.a.s.l.",
+  "name": "Catalpa Chardonnay",
+  "quality_level": "IG",
+  "wine_type": "wine",
+  "grapes": [
+   "Chardonnay"
+  ],
+  "signature": "atamisque|2023|valle de uco|tupungato, 1.300 m.a.s.l.|catalpa chardonnay|ig|wine|chardonnay"
+ },
+ {
+  "producer": "Karl Haidle",
+  "vintage": 2025,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Justinus K.",
+  "quality_level": "VDP.Gutswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Kerner"
+  ],
+  "signature": "karl haidle|2025|||justinus k.|vdp.gutswein|wine|kerner"
+ },
+ {
+  "producer": "Château Sérilhan",
+  "vintage": 2019,
+  "appellation": "Saint-Estèphe",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "AOC",
+  "wine_type": "wine",
+  "grapes": [
+   "Merlot",
+   "Cabernet Sauvignon"
+  ],
+  "signature": "chateau serilhan|2019|saint-estephe|||aoc|wine|cabernet sauvignon,merlot"
+ },
+ {
+  "producer": "Menzatia",
+  "vintage": 2024,
+  "appellation": "Salento",
+  "vineyard": null,
+  "name": "Edizione Nera",
+  "quality_level": "IGT",
+  "wine_type": "wine",
+  "grapes": [
+   "Primitivo",
+   "Negroamaro"
+  ],
+  "signature": "menzatia|2024|salento||edizione nera|igt|wine|negroamaro,primitivo"
+ },
+ {
+  "producer": "Adagio",
+  "vintage": 2020,
+  "appellation": "Brunello di Montalcino",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Sangiovese"
+  ],
+  "signature": "adagio|2020|brunello di montalcino|||docg|wine|sangiovese"
+ },
+ {
+  "producer": "Truentum",
+  "vintage": 2021,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Riva Sud",
+  "quality_level": "Vino Rosso d'Italia",
+  "wine_type": "wine",
+  "grapes": [
+   "Cabernet Sauvignon",
+   "Montepulciano"
+  ],
+  "signature": "truentum|2021|||riva sud|vino rosso d'italia|wine|cabernet sauvignon,montepulciano"
+ },
+ {
+  "producer": "Los Aljibes",
+  "vintage": 2007,
+  "appellation": "Castilla",
+  "vineyard": null,
+  "name": "Selectus",
+  "quality_level": "Vino de la Tierra (VdlT)",
+  "wine_type": "wine",
+  "grapes": [
+   "Merlot",
+   "Cabernet Sauvignon",
+   "Syrah",
+   "Cabernet Franc",
+   "Petit Verdot"
+  ],
+  "signature": "los aljibes|2007|castilla||selectus|vino de la tierra (vdlt)|wine|cabernet franc,cabernet sauvignon,merlot,petit verdot,syrah"
+ },
+ {
+  "producer": "Livio Felluga",
+  "vintage": 2024,
+  "appellation": "Friuli Colli Orientali",
+  "vineyard": null,
+  "name": "Friulano",
+  "quality_level": "DOC",
+  "wine_type": "wine",
+  "grapes": [
+   "Friulano"
+  ],
+  "signature": "livio felluga|2024|friuli colli orientali||friulano|doc|wine|friulano"
+ },
+ {
+  "producer": "Castello Banfi",
+  "vintage": 2019,
+  "appellation": "Brunello di Montalcino",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Sangiovese"
+  ],
+  "signature": "castello banfi|2019|brunello di montalcino|||docg|wine|sangiovese"
+ },
+ {
+  "producer": "Castello Finoto",
+  "vintage": 2020,
+  "appellation": "Brunello di Montalcino",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Sangiovese"
+  ],
+  "signature": "castello finoto|2020|brunello di montalcino|||docg|wine|sangiovese"
+ },
+ {
+  "producer": "Karl Haidle",
+  "vintage": 2023,
+  "appellation": null,
+  "vineyard": null,
+  "name": "Stetten",
+  "quality_level": "Deutscher Qualitätswein",
+  "wine_type": "wine",
+  "grapes": [
+   "Lemberger"
+  ],
+  "signature": "karl haidle|2023|||stetten|deutscher qualitatswein|wine|lemberger"
+ },
+ {
+  "producer": "Merayo",
+  "vintage": 2017,
+  "appellation": "Bierzo",
+  "vineyard": "Valtuille de Arriba",
+  "name": "Aquiana",
+  "quality_level": "DO",
+  "wine_type": "wine",
+  "grapes": [
+   "Mencía"
+  ],
+  "signature": "merayo|2017|bierzo|valtuille de arriba|aquiana|do|wine|mencia"
+ },
+ {
+  "producer": "San Silvestro",
+  "vintage": 2020,
+  "appellation": "Nizza",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Barbera"
+  ],
+  "signature": "san silvestro|2020|nizza|||docg|wine|barbera"
+ },
+ {
+  "producer": "Franzen",
+  "vintage": 2019,
+  "appellation": null,
+  "vineyard": "Bremmer Calmont",
+  "name": "Naslei",
+  "quality_level": "QbA",
+  "wine_type": "wine",
+  "grapes": [
+   "Riesling"
+  ],
+  "signature": "franzen|2019||bremmer calmont|naslei|qba|wine|riesling"
+ },
+ {
+  "producer": "Adagio",
+  "vintage": 2021,
+  "appellation": "Brunello di Montalcino",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Sangiovese"
+  ],
+  "signature": "adagio|2021|brunello di montalcino|||docg|wine|sangiovese"
+ },
+ {
+  "producer": "Cielo e Terra",
+  "vintage": 2019,
+  "appellation": "Amarone della Valpolicella",
+  "vineyard": null,
+  "name": "AmaRegi Riserva",
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Corvina",
+   "Rondinella"
+  ],
+  "signature": "cielo e terra|2019|amarone della valpolicella||amaregi riserva|docg|wine|corvina,rondinella"
+ },
+ {
+  "producer": "Gioso",
+  "vintage": 2020,
+  "appellation": "Barolo",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Nebbiolo"
+  ],
+  "signature": "gioso|2020|barolo|||docg|wine|nebbiolo"
+ },
+ {
+  "producer": "Micheletti",
+  "vintage": 2024,
+  "appellation": "Bolgheri",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "DOC",
+  "wine_type": "wine",
+  "grapes": [
+   "Merlot",
+   "Cabernet Sauvignon"
+  ],
+  "signature": "micheletti|2024|bolgheri|||doc|wine|cabernet sauvignon,merlot"
+ },
+ {
+  "producer": "Donna Laura",
+  "vintage": 2023,
+  "appellation": "Chianti Classico",
+  "vineyard": null,
+  "name": "Bramosia",
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Sangiovese"
+  ],
+  "signature": "donna laura|2023|chianti classico||bramosia|docg|wine|sangiovese"
+ },
+ {
+  "producer": "Tenuta Trerose",
+  "vintage": 2021,
+  "appellation": "Vino Nobile di Montepulciano",
+  "vineyard": null,
+  "name": "Palio della Rosa Riserva",
+  "quality_level": "DOCG",
+  "wine_type": "wine",
+  "grapes": [
+   "Sangiovese",
+   "Cabernet Sauvignon",
+   "Petit Verdot"
+  ],
+  "signature": "tenuta trerose|2021|vino nobile di montepulciano||palio della rosa riserva|docg|wine|cabernet sauvignon,petit verdot,sangiovese"
+ },
+ {
+  "producer": "  Château  SÉRILHAN ",
+  "vintage": 2019,
+  "appellation": "Saint-Estèphe",
+  "vineyard": null,
+  "name": null,
+  "quality_level": "AOC",
+  "wine_type": "wine",
+  "grapes": [
+   "Merlot",
+   "Cabernet Sauvignon"
+  ],
+  "signature": "chateau serilhan|2019|saint-estephe|||aoc|wine|cabernet sauvignon,merlot"
+ },
+ {
+  "producer": "Weingut Größl",
+  "vintage": null,
+  "appellation": null,
+  "vineyard": "Würzgarten",
+  "name": "Ñandú",
+  "quality_level": null,
+  "wine_type": null,
+  "grapes": [],
+  "signature": "weingut grossl|||wurzgarten|nandu|||"
+ }
+]
