@@ -1,12 +1,12 @@
 # 🍷 Schwips
 
-Schwips keeps track of your wine cellar: what you own, how many bottles of each, and when each one will be at its best to drink. To add a wine, you take a photo of its label; Claude Code reads it, researches anything not printed on it, and adds the bottle to your inventory. Schwips is a native **macOS app**: open it to browse your collection, search, filter and sort it, and see what's ready to drink.
+Schwips is a **Mac app** that keeps track of your wine cellar: what you own, how many bottles of each, and when each one will be at its best to drink. To add a wine, you take a photo of its label; Claude Code reads it, researches anything not printed on it, and Schwips adds the bottle to your inventory. Open the app to browse your collection, search, filter and sort it, and see what's ready to drink.
 
 > The app speaks English and German and follows your system language (in German you'll see "Im Bestand" for in stock, "Trinkreif jetzt" for ready to drink, and so on). There is no iPhone or iPad app yet, but Schwips is built so one can follow and share the same cellar.
 
-![The Schwips window in German: the sidebar with the lists Im Bestand, Trinkreif, Getrunken and Alle Weine and the colour filter set to Rot; the list of red wines in stock sorted by date added; and the detail of Tenuta Trerose Palio della Rosa Riserva 2021 with its facts, description, notes, label photos and one bottle in stock.](docs/screenshot.png)
+![The Schwips window in German: the sidebar with the lists Im Bestand, Trinkreif, Getrunken and Alle Weine and the eight filters; the wines in stock, red and white, sorted by date added, each with its grapes, vintage, appellation, tags and bottle count; and the detail of Tenuta Trerose Palio della Rosa Riserva 2021 with its facts, description, notes, label photos and one bottle in stock.](docs/screenshot.png)
 
-*The cellar filtered to red wines, with one wine open: its facts, description, label photos and bottles.*
+*Your cellar at a glance: the wines in stock on the left, one wine open with its facts, description, label photos and bottles.*
 
 ## 🗂️ Wines and bottles
 
